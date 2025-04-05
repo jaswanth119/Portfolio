@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "jaswant-portfolio",
+    "site": "jaswanth-portfolio",
     "public": "out",
     "ignore": [
       "firebase.json",
