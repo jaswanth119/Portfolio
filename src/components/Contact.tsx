@@ -38,7 +38,8 @@ const Contact = () => {
       setShowSuccess(true);
       setFormData({ name: '', email: '', message: '' });
       setTimeout(() => setShowSuccess(false), 5000);
-    } catch (err) {
+    } catch (error: unknown) {
+      console.error('Failed to send message:', error instanceof Error ? error.message : 'Unknown error');
       setError('Failed to send message. Please try again later.');
       setTimeout(() => setError(''), 5000);
     } finally {
