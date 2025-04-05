@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import emailjs from '@emailjs/browser';
+import { emailConfig } from '../lib/emailjs';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -9,15 +11,39 @@ const Contact = () => {
     message: ''
   });
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    emailjs.init(emailConfig.publicKey);
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
-    console.log('Form submitted:', formData);
-    setShowSuccess(true);
-    setFormData({ name: '', email: '', message: '' });
-    // Don't scroll to top
-    setTimeout(() => setShowSuccess(false), 5000); // Hide message after 5 seconds
+    setIsSubmitting(true);
+    setError('');
+
+    try {
+      await emailjs.send(
+        emailConfig.serviceId,
+        emailConfig.templateId,
+        {
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          date: new Date().toLocaleDateString()
+        }
+      );
+
+      setShowSuccess(true);
+      setFormData({ name: '', email: '', message: '' });
+      setTimeout(() => setShowSuccess(false), 5000);
+    } catch (err) {
+      setError('Failed to send message. Please try again later.');
+      setTimeout(() => setError(''), 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -43,6 +69,13 @@ const Contact = () => {
               </p>
               <p className="text-sm mt-2">
                 Thanks for reaching out! I&apos;ll get back to you soon 💌
+              </p>
+            </div>
+          )}
+          {error && (
+            <div className="mb-8 bg-red-100 border border-red-200 text-red-700 px-6 py-4 rounded-lg animate-bounce-in text-center">
+              <p className="text-lg font-medium">
+                ❌ {error}
               </p>
             </div>
           )}
@@ -100,11 +133,14 @@ const Contact = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 
-                       transform hover:-translate-y-1 transition-all duration-300 shadow-lg
-                       hover:shadow-xl font-medium"
+              disabled={isSubmitting}
+              className={`w-full py-3 px-6 rounded-lg text-white font-medium 
+                       transition-all duration-200 transform hover:scale-[1.02]
+                       ${isSubmitting 
+                         ? 'bg-blue-400 cursor-not-allowed' 
+                         : 'bg-blue-600 hover:bg-blue-700 active:scale-[0.98]'}`}
             >
-              Send Message ✉️
+              {isSubmitting ? 'Sending...' : 'Send Message'}
             </button>
           </form>
         </div>
