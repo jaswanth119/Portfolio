@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" rx="128" fill="#3B82F6"/>
+  
+  <!-- Letters with gradient -->
+  <defs>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#e2e8f0"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- JM text -->
+  <text x="256" y="320" 
+        font-family="Inter, system-ui, sans-serif" 
+        font-weight="700" 
+        font-size="240" 
+        text-anchor="middle" 
+        fill="url(#textGradient)"
+        style="filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.1))">
+    JM
+  </text>
+</svg>

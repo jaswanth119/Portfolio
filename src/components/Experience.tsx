@@ -11,7 +11,7 @@ const Experience = () => {
               <div className="absolute w-4 h-4 bg-blue-600 rounded-full -left-[10px]"></div>
               <h3 className="text-2xl font-bold text-blue-600">Senior Software Engineer</h3>
               <p className="text-lg text-gray-600 mb-2">Surfboard Payments</p>
-              <p className="text-gray-500 mb-4">May 2021 - Present</p>
+              <p className="text-gray-500 mb-4">August 2023 - Present</p>
               <div className="prose max-w-none">
                 <ul className="list-disc ml-4 text-gray-700">
                   <li>Lead testing teams across multiple projects including SoftPOS Mobile Apps (iOS & Android) and Terminal Testing</li>
@@ -26,7 +26,7 @@ const Experience = () => {
             <div className="mb-12 ml-8">
               <div className="absolute w-4 h-4 bg-blue-600 rounded-full -left-[10px]"></div>
               <h3 className="text-2xl font-bold text-blue-600">QA Engineer</h3>
-              <p className="text-lg text-gray-600 mb-2">Lendhope</p>
+              <p className="text-lg text-gray-600 mb-2">Surfboard Payments</p>
               <p className="text-gray-500 mb-4">Jan 2021 - Jul 2023</p>
               <div className="prose max-w-none">
                 <ul className="list-disc ml-4 text-gray-700">

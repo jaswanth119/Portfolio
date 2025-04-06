@@ -88,56 +88,84 @@ const Projects = () => {
 
   return (
     <section id="projects" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 animate-gradient-x"></div>
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 animate-gradient-x"></div>
+      
+      {/* Grid pattern */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
       </div>
+
+      {/* Floating bubbles */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={i}
+            className={`absolute animate-float opacity-20 transition-opacity duration-1000 hover:opacity-40`}
+            style={{
+              width: `${Math.random() * 120 + 60}px`,
+              height: `${Math.random() * 120 + 60}px`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              backgroundColor: i % 2 === 0 ? '#3B82F6' : '#6366F1',
+              borderRadius: '50%',
+              animation: `float-${i + 1} ${Math.random() * 15 + 20}s infinite`,
+              animationDelay: `${Math.random() * 5}s`,
+              filter: 'blur(1px)',
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Content */}
       <div className="container mx-auto px-4 relative">
         <h2 className="section-heading">Projects</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto">
           {projects.map((project, index) => (
             <div 
               key={index} 
-              className="bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100"
+              className="group bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-lg hover:shadow-xl 
+                       transition-all duration-500 hover:-translate-y-2 border border-gray-100
+                       hover:bg-white/90"
             >
-              <div className="flex justify-between items-start mb-3">
-                <div>
-                  <h3 className="text-xl font-bold text-blue-600">{project.title}</h3>
-                  <p className="text-gray-600 text-sm">{project.period}</p>
-                </div>
-                {project.role && (
-                  <div className="text-right">
-                    <p className="text-gray-700 font-medium">Role: {project.role}</p>
-                    <p className="text-gray-600 text-sm">Team Size: {project.teamSize}</p>
-                  </div>
-                )}
-              </div>
+              <h3 className="text-2xl font-bold text-blue-600 mb-2 group-hover:text-blue-700 
+                         transition-colors duration-300">
+                {project.title}
+              </h3>
+              <p className="text-gray-500 mb-4">{project.period}</p>
               <p className="text-gray-700 mb-4">{project.description}</p>
+              
               <div className="mb-4">
-                <h4 className="font-semibold mb-2 text-gray-800">Technologies:</h4>
+                <h4 className="text-lg font-semibold text-gray-800 mb-2">Technologies</h4>
                 <div className="flex flex-wrap gap-2">
                   {project.technologies.map((tech, techIndex) => (
-                    <span key={techIndex} className="bg-blue-100/80 backdrop-blur-sm text-blue-800 text-sm px-2 py-1 rounded">
+                    <span
+                      key={techIndex}
+                      className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm
+                               hover:bg-blue-100 transition-colors duration-300"
+                    >
                       {tech}
                     </span>
                   ))}
                 </div>
               </div>
+              
               <div>
-                <h4 className="font-semibold mb-2 text-gray-800">Key Highlights:</h4>
-                <ul className="text-gray-700 text-sm space-y-1">
+                <h4 className="text-lg font-semibold text-gray-800 mb-2">Highlights</h4>
+                <ul className="list-disc list-inside text-gray-700 space-y-1">
                   {project.highlights.map((highlight, highlightIndex) => (
-                    <li 
-                      key={highlightIndex} 
-                      className={highlight.endsWith(':') 
-                        ? 'font-semibold mt-2' 
-                        : 'list-disc ml-6'
-                      }
-                    >
+                    <li key={highlightIndex} className="hover:text-gray-900 transition-colors duration-300">
                       {highlight}
                     </li>
                   ))}
                 </ul>
+              </div>
+              
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <div className="flex justify-between text-gray-600">
+                  <span>Role: {project.role}</span>
+                  <span>Team Size: {project.teamSize}</span>
+                </div>
               </div>
             </div>
           ))}

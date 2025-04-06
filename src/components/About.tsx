@@ -76,7 +76,7 @@ const About = () => {
               <h3 className="text-2xl font-semibold text-blue-600">Languages</h3>
               <div className="bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-md border border-gray-100">
                 <ul className="space-y-3">
-                  {['Telugu', 'English', 'Tamil', 'Hindi'].map((language, index) => (
+                  {['Telugu', 'English', 'Hindi', 'Tamil'].map((language, index) => (
                     <li 
                       key={index}
                       className="flex items-center gap-3 text-gray-700"

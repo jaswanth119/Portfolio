@@ -28,6 +28,7 @@ const Hero = () => {
         ))}
       </div>
 
+      {/* Content */}
       <div className="container mx-auto px-4 relative">
         <div className="text-center">
           <h1 className="text-5xl font-bold mb-4 text-gray-800 animate-fade-in">
@@ -43,17 +44,19 @@ const Hero = () => {
           <div className="flex justify-center gap-4 animate-bounce-in">
             <a
               href="#contact"
-              className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 
-                       transform hover:-translate-y-1 transition-all duration-300 shadow-lg
-                       hover:shadow-xl"
+              className="bg-blue-600 text-white px-8 py-3 rounded-lg 
+                       hover:bg-blue-700 
+                       transform hover:-translate-y-1 transition-all duration-300 
+                       shadow-lg hover:shadow-xl"
             >
               Contact Me
             </a>
             <a
               href="#projects"
-              className="bg-white text-blue-600 px-8 py-3 rounded-lg hover:bg-blue-50
-                       transform hover:-translate-y-1 transition-all duration-300 shadow-lg
-                       hover:shadow-xl border border-blue-200"
+              className="bg-white text-blue-600 
+                       px-8 py-3 rounded-lg hover:bg-blue-50
+                       transform hover:-translate-y-1 transition-all duration-300 
+                       shadow-lg hover:shadow-xl border border-blue-200"
             >
               View Projects
             </a>

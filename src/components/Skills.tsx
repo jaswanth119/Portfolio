@@ -2,18 +2,18 @@ import React from 'react';
 
 const Skills = () => {
   const skills = [
-    'JavaScript',
-    'RESTful API Testing',
+    'Javascript',
+    'Restful API Testing',
     'Cypress',
-    'Maestro',
+    'Meastro',
     'Playwright',
+    'Test Automation',
     'HTML',
     'CSS',
     'Flutter',
     'PostgreSQL',
     'Jest',
     'CI/CD',
-    'Test Automation'
   ];
 
   return (
