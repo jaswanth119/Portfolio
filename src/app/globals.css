@@ -12,6 +12,15 @@
   }
 }
 
+@layer components {
+  .section-heading {
+    @apply text-4xl font-bold text-blue-600 text-center;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1280px;
+  }
+}
+
 @layer utilities {
   .nav-item-hover {
     @apply relative;

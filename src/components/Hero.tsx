@@ -16,35 +16,37 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 mb-4">
-          <TypeAnimation
-            sequence={[
-              'Hi! 👋',
-              1000,
-              'Hi! I am\nJaswanth',
-              1000,
-              'Hi! I am\nJaswanth Mallampati',
-              1000,
-              'Welcome to\nmy portfolio!',
-              1000,
-            ]}
-            wrapper="span"
-            speed={50}
-            style={{ whiteSpace: 'pre-line', display: 'inline-block' }}
-            repeat={Infinity}
-          />
-        </h1>
+        <div className="min-h-[200px] mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800">
+            <TypeAnimation
+              sequence={[
+                'Hi! 👋',
+                1000,
+                'Hi! I am\nJaswanth',
+                1000,
+                'Hi! I am\nJaswanth Mallampati',
+                1000,
+                'Welcome to\nmy portfolio!',
+                1000,
+              ]}
+              wrapper="span"
+              speed={50}
+              style={{ whiteSpace: 'pre-line', display: 'block' }}
+              repeat={Infinity}
+            />
+          </h1>
+        </div>
         <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-8">Senior Software Engineer</p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
           <Link 
             href="#contact" 
-            className="w-full sm:w-auto px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="block w-[200px] px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-center"
           >
             Contact Me
           </Link>
           <Link 
             href="#projects" 
-            className="w-full sm:w-auto px-8 py-3 bg-white text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
+            className="block w-[200px] px-8 py-3 bg-white text-blue-600 rounded-lg hover:bg-blue-50 transition-colors text-center"
           >
             View Projects
           </Link>
