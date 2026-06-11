@@ -7,11 +7,31 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      colors: {
+        accent: '#e8ff47',
+        dark: '#0a0a0a',
+        surface: '#111111',
+        muted: '#666666',
+      },
+      fontFamily: {
+        sans: ['var(--font-space-grotesk)', 'sans-serif'],
+        grotesk: ['var(--font-space-grotesk)', 'sans-serif'],
+      },
+      animation: {
+        marquee: 'marquee 35s linear infinite',
+        'marquee-rev': 'marquee-rev 35s linear infinite',
+      },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        'marquee-rev': {
+          '0%': { transform: 'translateX(-50%)' },
+          '100%': { transform: 'translateX(0%)' },
+        },
       },
     },
   },
   plugins: [],
-}
+};

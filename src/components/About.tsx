@@ -1,98 +1,116 @@
 'use client';
 
-import React from 'react';
+import { useEffect, useRef } from 'react';
 
-const About = () => {
-  const education = [
-    {
-      degree: 'B.TECH (ECE)',
-      institution: 'SRM University',
-      location: 'Chennai',
-      board: 'SRM',
-      period: 'Jun 2016 — May 2020'
-    },
-    {
-      degree: 'H.S.C',
-      institution: 'Sri Chaitanya H.S.C',
-      location: 'Vijayawada',
-      board: 'State Board',
-      period: 'Apr 2015 — Mar 2016'
-    },
-    {
-      degree: 'S.S.C',
-      institution: 'Bhashyam',
-      location: 'Guntur',
-      board: 'State Board',
-      period: 'Apr 2013 — Mar 2014'
-    }
-  ];
+const EDUCATION = [
+  { degree: 'B.TECH (ECE)', institution: 'SRM University', location: 'Chennai', period: '2016 — 2020' },
+  { degree: 'H.S.C', institution: 'Sri Chaitanya', location: 'Vijayawada', period: '2015 — 2016' },
+  { degree: 'S.S.C', institution: 'Bhashyam', location: 'Guntur', period: '2013 — 2014' },
+];
+
+const LANGUAGES = ['Telugu', 'English', 'Hindi', 'Tamil'];
+
+export default function About() {
+  const ref = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        entry.target.querySelectorAll<HTMLElement>('.reveal').forEach((el, i) => {
+          el.style.transitionDelay = `${i * 90}ms`;
+          el.classList.add('visible');
+        });
+        observer.disconnect();
+      },
+      { threshold: 0.08 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section id="about" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 animate-gradient-x"></div>
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-      </div>
-      <div className="container mx-auto px-4 relative">
-        <h2 className="section-heading">About Me</h2>
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-lg border border-gray-100 mb-8">
-            <p className="text-lg text-gray-700 leading-relaxed">
-              Senior Software Engineer in Test with over 4 years of experience in the payments industry. 
-              Based in Chennai, India, I specialize in creating robust automation frameworks and ensuring 
-              high-quality software delivery.
-            </p>
-          </div>
+    <section
+      id="about"
+      ref={ref}
+      className="py-24 lg:py-32"
+      style={{ borderTop: '1px solid var(--border)' }}
+    >
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        {/* Section label */}
+        <div className="reveal section-label">
+          <span>01</span>
+          <div className="line" />
+          <span>About</span>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-6">
-              <h3 className="text-2xl font-semibold text-blue-600">Education</h3>
-              <div className="space-y-6">
-                {education.map((edu, index) => (
-                  <div 
-                    key={index}
-                    className="bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-md hover:shadow-lg 
-                             transition-all duration-300 border border-gray-100"
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
+          {/* Left */}
+          <div>
+            <h2
+              className="reveal font-bold text-white leading-tight mb-8"
+              style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}
+            >
+              QA specialist &amp; E2E test automation engineer
+            </h2>
+            <p className="reveal text-zinc-400 text-base leading-relaxed mb-10">
+              Quality Test Engineer with 5+ years of experience across fintech and
+              enterprise software. Currently at SAP Fioneer in Hyderabad, building
+              scalable E2E test automation for commercial banking platforms using
+              Playwright and TypeScript. Previously led QA across payments, mobile,
+              and terminal certification at Surfboard Payments.
+            </p>
+
+            <div className="reveal">
+              <p className="text-xs font-medium text-zinc-500 uppercase tracking-[0.2em] mb-4">
+                Languages
+              </p>
+              <div className="flex flex-wrap gap-2.5">
+                {LANGUAGES.map((lang) => (
+                  <span
+                    key={lang}
+                    className="text-sm text-zinc-300 px-4 py-2 rounded-sm"
+                    style={{ border: '1px solid rgba(255,255,255,0.1)' }}
                   >
-                    <div className="flex justify-between items-start gap-4 mb-2">
-                      <h4 className="text-lg font-bold text-gray-800">{edu.degree}</h4>
-                      <span className="bg-blue-100/80 text-blue-800 text-sm px-3 py-1 rounded-full whitespace-nowrap">
-                        {edu.period}
-                      </span>
-                    </div>
-                    <div className="space-y-1 text-gray-600">
-                      <p className="font-medium">{edu.institution}</p>
-                      <p>{edu.location}</p>
-                      <p className="text-sm">
-                        <span className="font-medium">Board:</span> {edu.board}
-                      </p>
-                    </div>
-                  </div>
+                    {lang}
+                  </span>
                 ))}
               </div>
             </div>
+          </div>
 
+          {/* Right: education */}
+          <div>
+            <p className="reveal text-xs font-medium text-zinc-500 uppercase tracking-[0.2em] mb-8">
+              Education
+            </p>
             <div className="space-y-6">
-              <h3 className="text-2xl font-semibold text-blue-600">Languages</h3>
-              <div className="bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-md border border-gray-100">
-                <ul className="space-y-3">
-                  {['Telugu', 'English', 'Hindi', 'Tamil'].map((language, index) => (
-                    <li 
-                      key={index}
-                      className="flex items-center gap-3 text-gray-700"
-                    >
-                      <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-                      {language}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              {EDUCATION.map((edu, i) => (
+                <div
+                  key={i}
+                  className="reveal group pl-6 transition-colors duration-300"
+                  style={{ borderLeft: '2px solid rgba(255,255,255,0.07)' }}
+                  onMouseEnter={(e) =>
+                    ((e.currentTarget as HTMLElement).style.borderLeftColor = 'rgba(232,255,71,0.5)')
+                  }
+                  onMouseLeave={(e) =>
+                    ((e.currentTarget as HTMLElement).style.borderLeftColor = 'rgba(255,255,255,0.07)')
+                  }
+                >
+                  <div className="flex items-start justify-between gap-4 mb-1">
+                    <h3 className="font-semibold text-white text-sm group-hover:text-accent transition-colors">
+                      {edu.degree}
+                    </h3>
+                    <span className="text-xs text-zinc-400 whitespace-nowrap mt-0.5">{edu.period}</span>
+                  </div>
+                  <p className="text-sm text-zinc-400">{edu.institution}</p>
+                  <p className="text-xs text-zinc-500 mt-0.5">{edu.location}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default About;
+}

@@ -1,47 +1,111 @@
-import React from 'react';
+'use client';
 
-const Experience = () => {
+import { useEffect, useRef } from 'react';
+
+const EXPERIENCES = [
+  {
+    period: 'May 2026 — Present',
+    role: 'Quality Test Engineer (E2E)',
+    company: 'SAP Fioneer',
+    points: [
+      'Building and maintaining E2E test automation for the Commercial Workbench Platform (CWP) as part of Team Alpha',
+      'Implementing scalable Page Object Model architecture with reusable fixtures and utility helpers in Playwright + TypeScript',
+      'Writing E2E test flows covering deal lifecycle management features end-to-end',
+      'Collaborating across QA, BA, frontend and backend engineers in a cross-functional agile team',
+    ],
+  },
+  {
+    period: 'May 2021 — May 2026',
+    role: 'Senior Software Engineer',
+    company: 'Surfboard Payments',
+    points: [
+      'Lead testing teams across SoftPOS Mobile Apps (iOS & Android) and Terminal Testing',
+      'Developed automated test scripts using JavaScript, Jest, and Maestro',
+      'Achieved 90% test efficiency in API automation and 50% automation coverage in mobile',
+      'Conducted L3 testing for payment terminals, ensuring European payment compliance',
+      'Integrated automation into CI/CD pipelines with real-time Slack notifications',
+    ],
+  },
+];
+
+export default function Experience() {
+  const ref = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        entry.target.querySelectorAll<HTMLElement>('.reveal').forEach((el, i) => {
+          el.style.transitionDelay = `${i * 100}ms`;
+          el.classList.add('visible');
+        });
+        observer.disconnect();
+      },
+      { threshold: 0.06 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="experience" className="py-20 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <h2 className="section-heading">Experience</h2>
-        <div className="max-w-4xl mx-auto">
-          <div className="relative border-l-4 border-blue-600 ml-4">
-            <div className="mb-12 ml-8">
-              <div className="absolute w-4 h-4 bg-blue-600 rounded-full -left-[10px]"></div>
-              <h3 className="text-2xl font-bold text-blue-600">Senior Software Engineer</h3>
-              <p className="text-lg text-gray-600 mb-2">Surfboard Payments</p>
-              <p className="text-gray-500 mb-4">August 2023 - Present</p>
-              <div className="prose max-w-none">
-                <ul className="list-disc ml-4 text-gray-700">
-                  <li>Lead testing teams across multiple projects including SoftPOS Mobile Apps (iOS & Android) and Terminal Testing</li>
-                  <li>Developed and executed automated test scripts using JavaScript, Jest, and Maestro</li>
-                  <li>Achieved 90% test efficiency in API automation and 50% automation coverage in mobile app testing</li>
-                  <li>Conducted L3 testing for payment terminals and ensured compliance with European payment regulations</li>
-                  <li>Integrated automation test scripts into CI/CD pipelines with Slack notifications</li>
-                </ul>
-              </div>
-            </div>
+    <section
+      id="experience"
+      ref={ref}
+      className="py-24 lg:py-32"
+      style={{ borderTop: '1px solid var(--border)' }}
+    >
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        <div className="reveal section-label">
+          <span>03</span>
+          <div className="line" />
+          <span>Experience</span>
+        </div>
 
-            <div className="mb-12 ml-8">
-              <div className="absolute w-4 h-4 bg-blue-600 rounded-full -left-[10px]"></div>
-              <h3 className="text-2xl font-bold text-blue-600">QA Engineer</h3>
-              <p className="text-lg text-gray-600 mb-2">Surfboard Payments</p>
-              <p className="text-gray-500 mb-4">Jan 2021 - Jul 2023</p>
-              <div className="prose max-w-none">
-                <ul className="list-disc ml-4 text-gray-700">
-                  <li>Developed and maintained test automation frameworks using Cypress and JavaScript</li>
-                  <li>Achieved 90% test coverage for the Learning Portal Dashboard</li>
-                  <li>Conducted comprehensive testing across web dashboards and mobile applications</li>
-                  <li>Performed UI/UX testing and cross-device compatibility testing</li>
+        <h2
+          className="reveal font-bold text-white mb-16"
+          style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}
+        >
+          Work History
+        </h2>
+
+        <div>
+          {EXPERIENCES.map((exp, i) => (
+            <div
+              key={i}
+              className="reveal group grid lg:grid-cols-[260px_1fr] gap-6 lg:gap-12 py-10"
+              style={{ borderBottom: '1px solid var(--border)' }}
+            >
+              {/* Left */}
+              <div className="pt-1">
+                <p
+                  className="text-xs font-semibold uppercase tracking-widest mb-2"
+                  style={{ color: 'var(--accent)' }}
+                >
+                  {exp.period}
+                </p>
+                <p className="text-sm text-zinc-500">{exp.company}</p>
+              </div>
+
+              {/* Right */}
+              <div>
+                <h3
+                  className="font-bold text-white text-lg lg:text-xl mb-5 transition-colors duration-300 group-hover:text-accent"
+                >
+                  {exp.role}
+                </h3>
+                <ul className="space-y-2.5">
+                  {exp.points.map((pt, j) => (
+                    <li key={j} className="flex gap-3 text-zinc-400 text-sm leading-relaxed">
+                      <span style={{ color: 'var(--accent)', flexShrink: 0, marginTop: '0.25rem' }}>—</span>
+                      {pt}
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
   );
-};
-
-export default Experience;
+}

@@ -1,98 +1,83 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 
-const Skills = () => {
-  const skills = {
-    testing: [
-      'Restful API Testing',
-      'Cypress',
-      'Maestro',
-      'Playwright',
-      'Test Automation',
-      'Jest',
-      'CI/CD',
-    ],
-    programming: [
-      'Javascript',
-      'HTML',
-      'CSS',
-      'Flutter',
-      'PostgreSQL',
-    ]
-  };
+const TESTING = [
+  'Playwright', 'Page Object Model', 'Test Fixtures', 'API Testing',
+  'CI/CD', 'Restful API', 'Test Automation', 'Jest', 'E2E Testing',
+  'Playwright', 'Page Object Model', 'Test Fixtures', 'API Testing',
+  'CI/CD', 'Restful API', 'Test Automation', 'Jest', 'E2E Testing',
+];
+
+const PROGRAMMING = [
+  'TypeScript', 'JavaScript', 'HTML', 'CSS', 'PostgreSQL', 'Node.js', 'Git',
+  'TypeScript', 'JavaScript', 'HTML', 'CSS', 'PostgreSQL', 'Node.js', 'Git',
+];
+
+export default function Skills() {
+  const ref = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        entry.target.querySelectorAll<HTMLElement>('.reveal').forEach((el, i) => {
+          el.style.transitionDelay = `${i * 80}ms`;
+          el.classList.add('visible');
+        });
+        observer.disconnect();
+      },
+      { threshold: 0.08 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section id="skills" className="py-12 bg-white overflow-hidden">
-      <div className="container mx-auto px-4">
-        <motion.h2 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="section-heading mb-8"
+    <section
+      id="skills"
+      ref={ref}
+      className="py-24 lg:py-32 overflow-hidden"
+      style={{ borderTop: '1px solid var(--border)' }}
+    >
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 mb-16">
+        <div className="reveal section-label">
+          <span>02</span>
+          <div className="line" />
+          <span>Skills</span>
+        </div>
+        <h2
+          className="reveal font-bold text-white mb-3"
+          style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}
         >
-          Skills
-        </motion.h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          {/* Testing Skills */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="bg-gradient-to-br from-indigo-50 to-white rounded-2xl p-8 shadow-lg border border-indigo-100"
-          >
-            <h3 className="text-2xl font-bold text-indigo-600 mb-6 text-center">Testing Skills</h3>
-            <div className="flex flex-wrap gap-3 justify-center">
-              {skills.testing.map((skill, index) => (
-                <motion.div 
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.1 * index }}
-                  whileHover={{ scale: 1.05 }}
-                  className="bg-white px-4 py-2 rounded-full shadow-sm border border-indigo-100
-                           hover:shadow-md transition-all duration-300"
-                >
-                  <span className="text-gray-800 font-medium">{skill}</span>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+          Skills &amp; Tools
+        </h2>
+        <p className="reveal text-zinc-500 text-sm">Technologies I use every day</p>
+      </div>
 
-          {/* Programming Skills */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-8 shadow-lg border border-blue-100"
-          >
-            <h3 className="text-2xl font-bold text-blue-600 mb-6 text-center">Programming Skills</h3>
-            <div className="flex flex-wrap gap-3 justify-center">
-              {skills.programming.map((skill, index) => (
-                <motion.div 
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.1 * index }}
-                  whileHover={{ scale: 1.05 }}
-                  className="bg-white px-4 py-2 rounded-full shadow-sm border border-blue-100
-                           hover:shadow-md transition-all duration-300"
-                >
-                  <span className="text-gray-800 font-medium">{skill}</span>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+      {/* Row 1 — forward */}
+      <div className="mb-5 overflow-hidden">
+        <div className="marquee-track">
+          {TESTING.map((skill, i) => (
+            <span key={i} className="flex items-center gap-5 text-sm font-medium uppercase tracking-widest text-zinc-300 whitespace-nowrap">
+              <span style={{ color: 'var(--accent)', fontSize: '0.5rem' }}>◆</span>
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Row 2 — reverse */}
+      <div className="overflow-hidden">
+        <div className="marquee-track-rev">
+          {PROGRAMMING.map((skill, i) => (
+            <span key={i} className="flex items-center gap-5 text-sm font-medium uppercase tracking-widest text-zinc-600 whitespace-nowrap">
+              <span className="text-zinc-700" style={{ fontSize: '0.5rem' }}>◆</span>
+              {skill}
+            </span>
+          ))}
         </div>
       </div>
     </section>
   );
-};
-
-export default Skills;
+}

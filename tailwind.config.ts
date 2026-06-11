@@ -1,7 +1,6 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
-  darkMode: 'class',
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -10,37 +9,27 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Light mode colors
-        primary: {
-          light: '#3B82F6',
-          DEFAULT: '#2563EB',
-          dark: '#1D4ED8',
-        },
-        // Dark mode specific colors
-        dark: {
-          bg: {
-            primary: '#0F172A',
-            secondary: '#1E293B',
-          },
-          text: {
-            primary: '#F8FAFC',
-            secondary: '#CBD5E1',
-          }
-        }
+        accent: '#e8ff47',
+        dark: '#0a0a0a',
+        surface: '#111111',
+        muted: '#666666',
+      },
+      fontFamily: {
+        sans: ['var(--font-space-grotesk)', 'sans-serif'],
+        grotesk: ['var(--font-space-grotesk)', 'sans-serif'],
       },
       animation: {
-        'fade-in': 'fadeIn 0.5s ease-in-out',
-        'slide-up': 'slideUp 0.5s ease-out',
-        'fade-in-delay': 'fadeIn 0.5s ease-in-out 0.2s',
+        marquee: 'marquee 35s linear infinite',
+        'marquee-rev': 'marquee-rev 35s linear infinite',
       },
       keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
-        slideUp: {
-          '0%': { transform: 'translateY(20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
+        'marquee-rev': {
+          '0%': { transform: 'translateX(-50%)' },
+          '100%': { transform: 'translateX(0%)' },
         },
       },
     },

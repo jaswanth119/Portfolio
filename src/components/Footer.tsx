@@ -1,18 +1,17 @@
-import React from 'react';
-
-const Footer = () => {
+export default function Footer() {
   return (
-    <footer className="bg-white py-8 border-t border-gray-100">
-      <div className="container mx-auto px-4">
-        <div className="text-center">
-          <p className="text-gray-600 mb-2">Made by Jaswanth</p>
-          <p className="text-gray-500 text-sm">
-            © {new Date().getFullYear()} Jaswanth. All rights reserved.
-          </p>
-        </div>
+    <footer
+      className="py-8"
+      style={{ borderTop: '1px solid var(--border)' }}
+    >
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p className="text-xs text-zinc-400">
+          © 2025 Jaswanth Mallampati. All rights reserved.
+        </p>
+        <p className="text-xs text-zinc-600">
+          Built with Next.js &amp; Tailwind CSS
+        </p>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

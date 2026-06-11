@@ -1,153 +1,195 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import emailjs from '@emailjs/browser';
 import { emailConfig } from '../lib/emailjs';
 
-const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+export default function Contact() {
+  const ref = useRef<HTMLElement>(null);
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [success, setSuccess] = useState(false);
+  const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    emailjs.init(emailConfig.publicKey);
+    emailjs.init({ publicKey: emailConfig.publicKey });
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        entry.target.querySelectorAll<HTMLElement>('.reveal').forEach((el, i) => {
+          el.style.transitionDelay = `${i * 90}ms`;
+          el.classList.add('visible');
+        });
+        observer.disconnect();
+      },
+      { threshold: 0.08 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    setSending(true);
     setError('');
-
     try {
       await emailjs.send(
         emailConfig.serviceId,
         emailConfig.templateId,
-        {
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-          date: new Date().toLocaleDateString()
-        }
+        { name: form.name, email: form.email, message: form.message, date: new Date().toLocaleDateString() },
+        { publicKey: emailConfig.publicKey }
       );
-
-      setShowSuccess(true);
-      setFormData({ name: '', email: '', message: '' });
-      setTimeout(() => setShowSuccess(false), 5000);
-    } catch (error: unknown) {
-      console.error('Failed to send message:', error instanceof Error ? error.message : 'Unknown error');
-      setError('Failed to send message. Please try again later.');
+      setSuccess(true);
+      setForm({ name: '', email: '', message: '' });
+      setTimeout(() => setSuccess(false), 5000);
+    } catch {
+      setError('Failed to send. Please try again.');
       setTimeout(() => setError(''), 5000);
     } finally {
-      setIsSubmitting(false);
+      setSending(false);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
+
+  const inputClass =
+    'w-full text-sm text-white placeholder-zinc-600 px-4 py-3 rounded-sm focus:outline-none transition-colors duration-200';
+  const inputStyle = {
+    backgroundColor: 'var(--surface)',
+    border: '1px solid rgba(255,255,255,0.08)',
   };
 
   return (
-    <section id="contact" className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-tr from-blue-50 to-indigo-50 animate-gradient-x"></div>
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-      </div>
-      <div className="container mx-auto px-4 relative">
-        <h2 className="section-heading">Contact Me</h2>
-        <div className="max-w-2xl mx-auto">
-          {showSuccess && (
-            <div className="mb-8 bg-green-100 border border-green-200 text-green-700 px-6 py-4 rounded-lg animate-bounce-in text-center">
-              <p className="text-lg font-medium">
-                🎉 Message sent successfully! 🚀
-              </p>
-              <p className="text-sm mt-2">
-                Thanks for reaching out! I&apos;ll get back to you soon 💌
-              </p>
-            </div>
-          )}
-          {error && (
-            <div className="mb-8 bg-red-100 border border-red-200 text-red-700 px-6 py-4 rounded-lg animate-bounce-in text-center">
-              <p className="text-lg font-medium">
-                ❌ {error}
-              </p>
-            </div>
-          )}
-          <form 
-            onSubmit={handleSubmit}
-            className="bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-lg space-y-6 border border-gray-100"
-          >
-            <div>
-              <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 
-                         focus:ring-2 focus:ring-blue-200 transition-colors"
-                placeholder="Your name"
-              />
-            </div>
-            <div>
-              <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 
-                         focus:ring-2 focus:ring-blue-200 transition-colors"
-                placeholder="your.email@example.com"
-              />
-            </div>
-            <div>
-              <label htmlFor="message" className="block text-gray-700 font-medium mb-2">
-                Message
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                required
-                rows={5}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 
-                         focus:ring-2 focus:ring-blue-200 transition-colors resize-none"
-                placeholder="Your message here..."
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className={`w-full py-3 px-6 rounded-lg text-white font-medium 
-                       transition-all duration-200 transform hover:scale-[1.02]
-                       ${isSubmitting 
-                         ? 'bg-blue-400 cursor-not-allowed' 
-                         : 'bg-blue-600 hover:bg-blue-700 active:scale-[0.98]'}`}
+    <section
+      id="contact"
+      ref={ref}
+      className="py-24 lg:py-32"
+      style={{ borderTop: '1px solid var(--border)' }}
+    >
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        <div className="reveal section-label">
+          <span>05</span>
+          <div className="line" />
+          <span>Contact</span>
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
+          {/* Left */}
+          <div>
+            <h2
+              className="reveal font-bold text-white leading-tight mb-6"
+              style={{ fontSize: 'clamp(36px, 5.5vw, 68px)' }}
             >
-              {isSubmitting ? 'Sending...' : 'Send Message'}
-            </button>
-          </form>
+              LET&apos;S WORK
+              <br />
+              <span style={{ color: 'var(--accent)' }}>TOGETHER</span>
+            </h2>
+            <a
+              href="mailto:jaswanthmallampati@gmail.com"
+              className="reveal inline-block text-zinc-400 text-sm transition-colors duration-200 hover:text-accent pb-1 mb-8"
+              style={{ borderBottom: '1px solid rgba(255,255,255,0.15)' }}
+            >
+              jaswanthmallampati@gmail.com
+            </a>
+            <p className="reveal text-zinc-400 text-sm leading-relaxed max-w-xs">
+              Whether you have a project in mind, a question about my work, or just want to say
+              hello — my inbox is always open.
+            </p>
+          </div>
+
+          {/* Right: form */}
+          <div>
+            {success && (
+              <div
+                className="mb-6 text-sm px-5 py-4 rounded-sm"
+                style={{
+                  color: 'var(--accent)',
+                  backgroundColor: 'rgba(232,255,71,0.08)',
+                  border: '1px solid rgba(232,255,71,0.25)',
+                }}
+              >
+                Message sent! I&apos;ll get back to you soon.
+              </div>
+            )}
+            {error && (
+              <div
+                className="mb-6 text-sm px-5 py-4 rounded-sm"
+                style={{
+                  color: '#f87171',
+                  backgroundColor: 'rgba(248,113,113,0.08)',
+                  border: '1px solid rgba(248,113,113,0.25)',
+                }}
+              >
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="reveal grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs text-zinc-500 uppercase tracking-wider mb-2">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={form.name}
+                    onChange={onChange}
+                    required
+                    placeholder="Your name"
+                    className={inputClass}
+                    style={inputStyle}
+                    onFocus={(e) => ((e.target as HTMLElement).style.borderColor = 'rgba(232,255,71,0.4)')}
+                    onBlur={(e) => ((e.target as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)')}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-zinc-500 uppercase tracking-wider mb-2">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={form.email}
+                    onChange={onChange}
+                    required
+                    placeholder="your@email.com"
+                    className={inputClass}
+                    style={inputStyle}
+                    onFocus={(e) => ((e.target as HTMLElement).style.borderColor = 'rgba(232,255,71,0.4)')}
+                    onBlur={(e) => ((e.target as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)')}
+                  />
+                </div>
+              </div>
+              <div className="reveal">
+                <label className="block text-xs text-zinc-500 uppercase tracking-wider mb-2">Message</label>
+                <textarea
+                  name="message"
+                  value={form.message}
+                  onChange={onChange}
+                  required
+                  rows={6}
+                  placeholder="Tell me about your project..."
+                  className={`${inputClass} resize-none`}
+                  style={inputStyle}
+                  onFocus={(e) => ((e.target as HTMLElement).style.borderColor = 'rgba(232,255,71,0.4)')}
+                  onBlur={(e) => ((e.target as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)')}
+                />
+              </div>
+              <div className="reveal">
+                <button
+                  type="submit"
+                  disabled={sending}
+                  className="px-8 py-3 text-sm font-bold tracking-widest uppercase rounded-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90"
+                  style={{ backgroundColor: 'var(--accent)', color: '#000' }}
+                >
+                  {sending ? 'Sending...' : 'Send Message →'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default Contact;
+}
